@@ -1,0 +1,3 @@
+[submodule "public/wall"]
+	path = public/wall
+	url = git@github.com:snowbot3/wall.git

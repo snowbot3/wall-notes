@@ -1,22 +1,23 @@
 {
-  "name": "wall-notes",
-  "version": "0.0.1",
-  "description": "Note project using Wall project",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/snowbot3/wall-notes.git"
-  },
-  "author": "snowbot3",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/snowbot3/wall-notes/issues"
-  },
-  "homepage": "https://github.com/snowbot3/wall-notes#readme",
-  "devDependencies": {
-    "json-server": "^0.16.3"
-  }
+	"name": "wall-notes",
+	"version": "0.0.1",
+	"description": "Note project using Wall project",
+	"main": "server.js",
+	"scripts": {
+		"start": "node server.js",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+ssh://git@github.com/snowbot3/wall-notes.git"
+	},
+	"author": "snowbot3",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/snowbot3/wall-notes/issues"
+	},
+	"homepage": "https://github.com/snowbot3/wall-notes#readme",
+	"devDependencies": {
+		"json-server": "^0.16.3"
+	}
 }
