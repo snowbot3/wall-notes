@@ -6,13 +6,17 @@ body {
 	margin: 0;
 	min-height: 100vh;
 	display: grid;
-	grid-template: 84px auto 24px / 150px auto;
+	grid-template: 50px auto 24px / 150px auto;
 }
 header {
 	grid-column: 1 / span 2;
 	grid-row: 1;
 	background: ${theme.head.bg};
-	padding: 2px 30px;
+	padding: 4px 10px;
+}
+header >img {
+	height: 36px;
+	margin: 2px;
 }
 nav {
 	grid-column: 1;
@@ -23,6 +27,9 @@ section {
 	grid-column: 2;
 	grid-row: 2;
 	padding: 20px;
+}
+section >div {
+	height: 100%;
 }
 footer {
 	grid-column: 2;
@@ -48,7 +55,7 @@ async function fetchPage(page) {
 		const dom = await resolve(mod.default);
 		frame.append(dom);
 	} catch(er) {
-		frame.append(elem('Error: ', er));
+		frame.append(elem('div', 'Error: ', er));
 	}
 }
 
@@ -64,9 +71,11 @@ function onHashChange(ev) {
 window.addEventListener('hashchange', onHashChange);
 
 const body = elem(document.body);
-body.append(...doms(function(header,h1,nav,section,footer,ul,li,a){
+body.append(...doms(function(header,h1,nav,section,footer,ul,li,a,img){
 	return [
-		header(h1('Notes')),
+		header(
+			img`src=img/logo-black.png`()
+		),
 		nav(
 			ul(
 				li(a`href=#`('Notes')),
