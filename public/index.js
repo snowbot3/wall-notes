@@ -1,4 +1,5 @@
 import { css, elem, doms } from './wall/js/all.mjs';
+import * as status from './status.js';
 import theme from './theme.js';
 
 css(`
@@ -13,10 +14,17 @@ header {
 	grid-row: 1;
 	background: ${theme.head.bg};
 	padding: 4px 10px;
+	display: flex;
 }
-header >img {
+header >div {
+	flex: 1;
+}
+header >div >img {
 	height: 36px;
 	margin: 2px;
+}
+header >div.header-right {
+	text-align: right;
 }
 nav {
 	grid-column: 1;
@@ -48,6 +56,7 @@ async function resolve(obj) {
 }
 
 const frame = elem`div`();
+status.push('Loading');
 async function fetchPage(page) {
 	frame.clear();
 	try {
@@ -55,8 +64,9 @@ async function fetchPage(page) {
 		const dom = await resolve(mod.default);
 		frame.append(dom);
 	} catch(er) {
-		frame.append(elem('div', 'Error: ', er));
+		frame.append(elem('div', 'Error: ', er.toString()));
 	}
+	status.pop('Loading');
 }
 
 function onHashChange(ev) {
@@ -71,10 +81,18 @@ function onHashChange(ev) {
 window.addEventListener('hashchange', onHashChange);
 
 const body = elem(document.body);
-body.append(...doms(function(header,h1,nav,section,footer,ul,li,a,img){
+body.append(...doms(function(header,nav,section,footer,ul,li,a,div,img,input){
 	return [
 		header(
-			img`src=img/logo-black.png`()
+			div(
+				img`src=img/logo-black.png`(),
+			),
+			div(
+				input`disabled placeholder="Future Searchbar"`()
+			),
+			div`class=header-right`(
+				status.elem
+			)
 		),
 		nav(
 			ul(
