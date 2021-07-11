@@ -4,6 +4,7 @@ import theme from './theme.js';
 
 css(`
 body {
+	font-family: sans-serif;
 	margin: 0;
 	min-height: 100vh;
 	display: grid;
@@ -56,8 +57,8 @@ async function resolve(obj) {
 }
 
 const frame = elem`div`();
-status.push('Loading');
 async function fetchPage(page) {
+	status.push('Loading');
 	frame.clear();
 	try {
 		const mod = await import(`./pages/${page}.js`);
@@ -65,6 +66,7 @@ async function fetchPage(page) {
 		frame.append(dom);
 	} catch(er) {
 		frame.append(elem('div', 'Error: ', er.toString()));
+		status.push('Error');
 	}
 	status.pop('Loading');
 }
@@ -80,6 +82,7 @@ function onHashChange(ev) {
 }
 window.addEventListener('hashchange', onHashChange);
 
+status.push('Loading');
 const body = elem(document.body);
 body.append(...doms(function(header,nav,section,footer,ul,li,a,div,img,input){
 	return [
@@ -109,3 +112,4 @@ body.append(...doms(function(header,nav,section,footer,ul,li,a,div,img,input){
 }));
 
 onHashChange();
+status.pop('Loading');
