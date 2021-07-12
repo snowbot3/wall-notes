@@ -1,11 +1,13 @@
 import { css, dom, doms, elem } from '../wall.js';
+import * as status from '../status.js';
 
 css(`
 div.list-notes {
 	height: 100%;
+	padding: 18px 0;
 }
-div.list-notes >div:nth-child(even) {
-	background: #f8f8ff;
+div.list-notes >div {
+	padding: 2px 20px;
 }
 `);
 
@@ -19,13 +21,11 @@ function delay(fn) {
 */
 
 function inspect(ev, event) {
-	if (['ArrowLeft', 'Left', 'ArrowRight', 'Right'].includes(ev.key)) {
+	/* if (['ArrowLeft', 'Left', 'ArrowRight', 'Right'].includes(ev.key)) {
 		const sel = document.getSelection();
 		console.log(`on${event}:arrow: `, sel.focusOffset);
-	} else if (ev.key == 'Enter') {
-		// a new line is formed. make sure it did not duplicate the id of the previous.
-		// and if it is empty, clear the created datetime.
-	} else if (ev.key.length > 1) {
+	} else */
+	if (ev.key.length > 1) {
 		console.log(`on${event}: `, ev.key);
 		// single characters or Spacebar should label the current not as dirty.
 	} else if (ev.key == 'i') {
@@ -50,17 +50,67 @@ function onKeyUp(ev) {
 
 class NotesPage {
 	constructor() {
-		this.elem = dom`div class=list-notes
+		this.elem = dom`div class="list-notes th-even"
 			contentEditable=${true}
-			onkeydown=${onKeyDown}
+			onkeydown=${(ev)=>this.onKeyDown(ev)}
 			onkeypress=${onKeyPress}
 			onkeyup=${(ev)=>this.onKeyUp(ev)}
 			`();
 		//this.load();
 	}
+	onKeyDown(ev) {
+		console.log('class keydown');
+		onKeyDown(ev);
+		if (['Backspace','Enter'].includes(ev.key)) {
+			// check for changes?
+			console.log('::COF:: Down:: ', ev.key);
+			const sel = window.getSelection();
+			this.fromDown = {
+				focusNode: sel.focusNode,
+			};
+		}
+	}
 	onKeyUp(ev) {
 		console.log('class keyup');
 		onKeyUp(ev);
+		if (ev.key == 'Enter') {
+			const sel = window.getSelection();
+			const div = this.findNoteDiv(sel.focusNode);
+			delete div.dataset.id;
+			if (div.textContent == '') {
+				delete div.dataset.created;
+				delete div.dataset.dirty;
+			}
+		} else if (ev.key == 'Backspace') {
+			console.log('::COF:: Up:: ', this.fromDown.focusNode.parentElement);
+			const sel = window.getSelection();
+			if (sel.focusNode == this.fromDown.focusNode) {
+				// This is not easy.
+			}
+		} else if (ev.key.length == 1) {
+			// not sure about alt key checking yet.
+			if (!this.dirty) {
+				this.dirty = true;
+				status.push('Dirty');
+			}
+			const sel = window.getSelection();
+			const div = this.findNoteDiv(sel.focusNode);
+			if (!div.dataset.dirty) {
+				div.dataset.dirty = 'dirty'; // would a timestamp help here?
+				if (!div.dataset.created) {
+					div.dataset.created = (new Date()).toString();
+				}
+			}
+		}
+	}
+	findNoteDiv(node) {
+		if (!node || !node.parentElement) {
+			throw new Error('wall-notes: list-notes: No path to parent note element');
+		}
+		if (node.parentElement.classList.contains('list-notes')) {
+			return node;
+		}
+		return this.findNoteDiv(node.parentElement);
 	}
 	single(note) {
 		return doms(div=>div`data-id=${note.id} data-created=${note.created}`(note.note));

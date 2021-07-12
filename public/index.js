@@ -1,6 +1,6 @@
 import { css, elem, doms } from './wall/js/all.mjs';
 import * as status from './status.js';
-import theme from './theme.js';
+import './theme.js'; // just apply
 
 css(`
 body {
@@ -8,12 +8,11 @@ body {
 	margin: 0;
 	min-height: 100vh;
 	display: grid;
-	grid-template: 50px auto 24px / 150px auto;
+	grid-template: 50px auto 24px / 90px auto;
 }
 header {
 	grid-column: 1 / span 2;
 	grid-row: 1;
-	background: ${theme.head.bg};
 	padding: 4px 10px;
 	display: flex;
 }
@@ -30,15 +29,15 @@ header >div.header-right {
 nav {
 	grid-column: 1;
 	grid-row: 2 / span 2;
-	background: ${theme.side.bg};
+}
+nav > ul {
+	list-style: none;
+	margin: 6px;
+	padding: 6px;
 }
 section {
 	grid-column: 2;
 	grid-row: 2;
-	padding: 20px;
-}
-section >div {
-	height: 100%;
 }
 footer {
 	grid-column: 2;
@@ -46,6 +45,8 @@ footer {
 	text-align: center;
 }
 `);
+
+css.link('./mobile.css');
 
 async function resolve(obj) {
 	if (typeof obj == 'function') {
@@ -56,18 +57,18 @@ async function resolve(obj) {
 	return obj;
 }
 
-const frame = elem`div`();
+const frame = elem`section`();
 async function fetchPage(page) {
 	status.push('Loading');
 	frame.clear();
-	try {
+	//try {
 		const mod = await import(`./pages/${page}.js`);
 		const dom = await resolve(mod.default);
 		frame.append(dom);
-	} catch(er) {
+	/*} catch(er) {
 		frame.append(elem('div', 'Error: ', er.toString()));
 		status.push('Error');
-	}
+	}*/
 	status.pop('Loading');
 }
 
@@ -84,9 +85,9 @@ window.addEventListener('hashchange', onHashChange);
 
 status.push('Loading');
 const body = elem(document.body);
-body.append(...doms(function(header,nav,section,footer,ul,li,a,div,img,input){
+body.append(...doms(function(header,nav,footer,ul,li,a,div,img,input){
 	return [
-		header(
+		header`class=th-head`(
 			div(
 				img`src=img/logo-black.png`(),
 			),
@@ -97,16 +98,14 @@ body.append(...doms(function(header,nav,section,footer,ul,li,a,div,img,input){
 				status.elem
 			)
 		),
-		nav(
+		nav`class=th-side`(
 			ul(
 				li(a`href=#`('Notes')),
 				li(a`href=#active`('Active')),
 				li(a`href=#search`('Search'))
 			)
 		),
-		section(
-			frame
-		),
+		frame,
 		footer('by snowbot3')
 	];
 }));
