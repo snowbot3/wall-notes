@@ -1,14 +1,17 @@
 import { css, elem, doms } from './wall/js/all.mjs';
 import * as status from './status.js';
+import { elem as log_elem } from './log.js';
 import './theme.js'; // just apply
 
 css(`
+* { box-sizing: border-box; }
 body {
 	font-family: sans-serif;
 	margin: 0;
 	min-height: 100vh;
 	display: grid;
-	grid-template: 50px auto 24px / 90px auto;
+	/* grid-template: 50px auto 24px / 90px auto; */
+	grid-template: 50px auto 200px / 90px auto;
 }
 header {
 	grid-column: 1 / span 2;
@@ -42,7 +45,8 @@ section {
 footer {
 	grid-column: 2;
 	grid-row: 3;
-	text-align: center;
+	/* text-align: center; */
+	overflow-y: scroll;
 }
 `);
 
@@ -74,11 +78,7 @@ async function fetchPage(page) {
 
 function onHashChange(ev) {
 	const hash = location.hash.slice(1);
-	//if (hash[0] == '#') { hash = hash.slice(1); }
-	//let ind = hash.indexOf('/');
-	//if (ind == -1) { ind = hash.length; }
-	//const page = hash.slice(0, ind) || 'home';
-	const page = hash.split('/',1)[0] || 'home';
+	const page = hash.split('/', 1)[0] || 'home';
 	fetchPage(page);
 }
 window.addEventListener('hashchange', onHashChange);
@@ -106,7 +106,10 @@ body.append(...doms(function(header,nav,footer,ul,li,a,div,img,input){
 			)
 		),
 		frame,
-		footer('by snowbot3')
+		footer(
+			log_elem
+			//'by snowbot3'
+		)
 	];
 }));
 

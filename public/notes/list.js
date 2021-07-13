@@ -1,5 +1,6 @@
 import { css, dom, doms, elem } from '../wall.js';
 import * as status from '../status.js';
+import log from '../log.js';
 
 css(`
 div.list-notes {
@@ -53,13 +54,13 @@ class NotesPage {
 		this.elem = dom`div class="list-notes th-even"
 			contentEditable=${true}
 			onkeydown=${(ev)=>this.onKeyDown(ev)}
-			onkeypress=${onKeyPress}
+			onkeypress=${(ev)=>this.onKeyPress(ev)}
 			onkeyup=${(ev)=>this.onKeyUp(ev)}
 			`();
 		//this.load();
 	}
 	onKeyDown(ev) {
-		console.log('class keydown');
+		log(`${ev.constructor.name} : ${ev.type} : ${ev.key}`);
 		onKeyDown(ev);
 		if (['Backspace','Enter'].includes(ev.key)) {
 			// check for changes?
@@ -70,8 +71,12 @@ class NotesPage {
 			};
 		}
 	}
+	onKeyPress(ev) {
+		log(`${ev.constructor.name} : ${ev.type} : ${ev.key}`);
+		onKeyPress(ev);
+	}
 	onKeyUp(ev) {
-		console.log('class keyup');
+		log(`${ev.constructor.name} : ${ev.type} : ${ev.key}`);
 		onKeyUp(ev);
 		if (ev.key == 'Enter') {
 			const sel = window.getSelection();
