@@ -10,7 +10,7 @@ export default async function page(id) {
 	const resp = await fetchRamble(id);
 	const ramble = resp[0];
 	console.log(resp);
-	return div`class=th-body`(
+	return div`class="page-outer th-body"`(
 		div`class=th-head`(
 			ramble.id, ' ', ramble.note.note
 		),

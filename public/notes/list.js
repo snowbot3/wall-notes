@@ -60,7 +60,7 @@ class NotesPage {
 		//this.load();
 	}
 	onKeyDown(ev) {
-		log(`${ev.constructor.name} : ${ev.type} : ${ev.key}`);
+		log(`${ev.constructor.name} : ${ev.type} : ${ev.key} : ${ev.keyCode}`);
 		onKeyDown(ev);
 		if (['Backspace','Enter'].includes(ev.key)) {
 			// check for changes?
@@ -72,11 +72,11 @@ class NotesPage {
 		}
 	}
 	onKeyPress(ev) {
-		log(`${ev.constructor.name} : ${ev.type} : ${ev.key}`);
+		log(`${ev.constructor.name} : ${ev.type} : ${ev.key} : ${ev.keyCode}`);
 		onKeyPress(ev);
 	}
 	onKeyUp(ev) {
-		log(`${ev.constructor.name} : ${ev.type} : ${ev.key}`);
+		log(`${ev.constructor.name} : ${ev.type} : ${ev.key} : ${ev.keyCode}`);
 		onKeyUp(ev);
 		if (ev.key == 'Enter') {
 			const sel = window.getSelection();

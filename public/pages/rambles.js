@@ -3,7 +3,7 @@ import { css, doms } from '../wall.js';
 css(`
 a.link-ramble {
 	display: block;
-	margin: 10px;
+	margin: 5px;
 	padding: 10px;
 	color: black;
 }
@@ -17,9 +17,11 @@ async function fetchRambles() {
 function single(ramble) {
 	console.log('::COF:: ', ramble);
 	return doms(function(div, a){
-		return a`class="link-ramble th-head th-corner"
-				href=#ramble/${ramble.id}`(
-			ramble.id, ' ', ramble.note.note
+		return div`class=page-outer`(
+			a`class="link-ramble th-head th-corner"
+					href=#ramble/${ramble.id}`(
+				ramble.id, ' ', ramble.note.note
+			)
 		);
 	});
 }

@@ -3,54 +3,7 @@ import * as status from './status.js';
 import { elem as log_elem } from './log.js';
 import './theme.js'; // just apply
 
-css(`
-* { box-sizing: border-box; }
-body {
-	font-family: sans-serif;
-	margin: 0;
-	min-height: 100vh;
-	display: grid;
-	/* grid-template: 50px auto 24px / 90px auto; */
-	grid-template: 50px auto 200px / 90px auto;
-}
-header {
-	grid-column: 1 / span 2;
-	grid-row: 1;
-	padding: 4px 10px;
-	display: flex;
-}
-header >div {
-	flex: 1;
-}
-header >div >img {
-	height: 36px;
-	margin: 2px;
-}
-header >div.header-right {
-	text-align: right;
-}
-nav {
-	grid-column: 1;
-	grid-row: 2 / span 2;
-}
-nav > ul {
-	list-style: none;
-	margin: 6px;
-	padding: 6px;
-}
-section {
-	grid-column: 2;
-	grid-row: 2;
-}
-footer {
-	grid-column: 2;
-	grid-row: 3;
-	/* text-align: center; */
-	overflow-y: scroll;
-}
-`);
-
-css.link('./mobile.css');
+css.link('./global.css');
 
 async function resolve(obj, parts) {
 	if (typeof obj == 'function') {
