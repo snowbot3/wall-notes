@@ -52,9 +52,9 @@ footer {
 
 css.link('./mobile.css');
 
-async function resolve(obj) {
+async function resolve(obj, parts) {
 	if (typeof obj == 'function') {
-		return resolve(obj());
+		return resolve(obj(...parts), parts);
 	} else if(obj instanceof Promise) {
 		return await obj;
 	}
@@ -62,12 +62,12 @@ async function resolve(obj) {
 }
 
 const frame = elem`section`();
-async function fetchPage(page) {
+async function fetchPage(page, parts) {
 	status.push('Loading');
 	frame.clear();
 	//try {
 		const mod = await import(`./pages/${page}.js`);
-		const dom = await resolve(mod.default);
+		const dom = await resolve(mod.default, parts);
 		frame.append(dom);
 	/*} catch(er) {
 		frame.append(elem('div', 'Error: ', er.toString()));
@@ -78,8 +78,9 @@ async function fetchPage(page) {
 
 function onHashChange(ev) {
 	const hash = location.hash.slice(1);
-	const page = hash.split('/', 1)[0] || 'home';
-	fetchPage(page);
+	const parts = hash.split('/');
+	const page = parts.shift() || 'home';
+	fetchPage(page, parts);
 }
 window.addEventListener('hashchange', onHashChange);
 
@@ -101,7 +102,7 @@ body.append(...doms(function(header,nav,footer,ul,li,a,div,img,input){
 		nav`class=th-side`(
 			ul(
 				li(a`href=#`('Notes')),
-				li(a`href=#active`('Active')),
+				li(a`href=#rambles`('Rambles')),
 				li(a`href=#search`('Search'))
 			)
 		),
