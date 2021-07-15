@@ -1,4 +1,5 @@
 import { doms } from '../wall.js';
+import rte from '../rte/rte.js';
 const div = doms('div');
 
 async function fetchRamble(id) {
@@ -10,12 +11,14 @@ export default async function page(id) {
 	const resp = await fetchRamble(id);
 	const ramble = resp[0];
 	console.log(resp);
+	const rteNote = rte({ single: true }, div(ramble.note.note));
+	const rteRamble = rte(ramble.text);
 	return div`class="page-outer th-body"`(
 		div`class=th-head`(
-			ramble.id, ' ', ramble.note.note
+			ramble.id, ' ', rteNote
 		),
 		div(
-			ramble.text
+			rteRamble
 		)
 	);
 }
