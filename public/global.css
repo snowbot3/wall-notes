@@ -5,7 +5,7 @@ body {
 	min-height: 100vh;
 	display: grid;
 	/* grid-template: 50px auto 24px / 90px auto; */
-	grid-template: 50px auto 200px / 90px auto;
+	grid-template: 34px auto 200px / 90px auto;
 }
 header {
 	grid-column: 1 / span 2;
@@ -17,7 +17,7 @@ header >div {
 	flex: 1;
 }
 header >div >img {
-	height: 36px;
+	height: 24px;
 	margin: 2px;
 }
 header >div.header-right {
@@ -48,6 +48,12 @@ footer {
 
 /* currently wall-css does not handle @media */
 @media (max-width: 570px) { 
+	body {
+		grid-template: 50px auto 200px / 90px auto;
+	}
+	header >div >img {
+		height: 40px;
+	}
 	header {
 		display: grid;
 		grid-template: auto auto / auto auto;
@@ -58,10 +64,10 @@ footer {
 	}
 	header > div:nth-child(2) {
 		grid-column: 2;
-		grid-row: 1;
+		grid-row: 2;
 	}
 	header > div:nth-child(3) {
 		grid-column: 2;
-		grid-row: 2;
+		grid-row: 1;
 	}
 }
