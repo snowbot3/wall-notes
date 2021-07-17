@@ -11,14 +11,19 @@ div.rte {
 	height: 100%;
 	padding: 18px 0;
 }
-div.rte >div {
+div.rte > div,
+div.rte > p {
 	padding: 2px 20px;
+}
+div.rte > p {
+	margin: 0.5em 0;
 }
 div.rte-single {
 	display: inline-block;
 	padding: 2px;
 }
-div.rte-single > div {
+div.rte-single > div,
+div.rte-single > p {
 	padding: 2px;
 }
 `);
@@ -101,11 +106,11 @@ class RichText {
 		onKeyUp(ev);
 		if (ev.key == 'Enter') {
 			const sel = window.getSelection();
-			const div = this.findLineDiv(sel.focusNode);
-			delete div.dataset.id;
-			if (div.textContent == '') {
-				delete div.dataset.created;
-				delete div.dataset.dirty;
+			const line = this.findLineElem(sel.focusNode);
+			delete line.dataset.id;
+			if (line.textContent == '') {
+				delete line.dataset.created;
+				delete line.dataset.dirty;
 			}
 		} else if (ev.key == 'Backspace') {
 			console.log('::COF:: Up:: ', this.fromDown.focusNode.parentElement);
@@ -120,26 +125,23 @@ class RichText {
 				status.push('Dirty');
 			}
 			const sel = window.getSelection();
-			const div = this.findLineDiv(sel.focusNode);
-			if (!div.dataset.dirty) {
-				div.dataset.dirty = 'dirty'; // would a timestamp help here?
-				if (!div.dataset.created) {
-					div.dataset.created = (new Date()).toString();
+			const line = this.findLineElem(sel.focusNode);
+			if (!line.dataset.dirty) {
+				line.dataset.dirty = 'dirty'; // would a timestamp help here?
+				if (!line.dataset.created) {
+					line.dataset.created = (new Date()).toString();
 				}
 			}
 		}
 	}
-	findLineDiv(node) {
+	findLineElem(node) {
 		if (!node || !node.parentElement) {
-			throw new Error('wall-rte: No path to rte line div');
+			throw new Error('wall-rte: No path to rte line elem');
 		}
 		if (node.parentElement.classList.contains('rte')) {
 			return node;
 		}
-		return this.findLineDiv(node.parentElement);
-	}
-	single(note) {
-		return doms(div=>div`data-id=${note.id} data-created=${note.created}`(note.note));
+		return this.findLineElem(node.parentElement);
 	}
 }
 

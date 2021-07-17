@@ -23,7 +23,7 @@ function delay(fn) {
 }
 */
 function singleNote(note) {
-	return doms(div=>div`data-id=${note.id} data-created=${note.created}`(note.note));
+	return doms(p=>p`data-id=${note.id} data-created=${note.created}`(note.note));
 }
 async function fetchNotes() {
 	const resp = await fetch('/api/notes?_page=1');
